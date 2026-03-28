@@ -4,37 +4,85 @@
     <meta charset="UTF-8">
     <title>Sha có điều muốn nói</title>
     <style>
-        body { margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #ffe4e1; font-family: sans-serif; overflow: hidden; }
-        h1 { color: #d63384; }
-        button { padding: 15px 30px; font-size: 1.2rem; background: #ff69b4; color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 9999; position: relative; }
-        .popup { position: absolute; width: 200px; padding: 15px; background: white; border: 2px solid #ff69b4; border-radius: 10px; box-shadow: 5px 5px 15px rgba(0,0,0,0.1); z-index: 100; text-align: center; pointer-events: none; animation: pop 0.3s ease-out; }
-        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+        /* 1. CHỈNH NỀN TOÀN TRANG (MÀU TRẮNG) */
+        body { 
+            margin: 0; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            background: #ffffff; /* Màu trắng #ffffff */
+            font-family: sans-serif; 
+            overflow: hidden; 
+        }
+
+        /* 2. CHỈNH CHỮ TIÊU ĐỀ (MÀU ĐEN) */
+        h1 { 
+            color: #000000; /* Màu đen #000000 */
+            font-size: 3rem; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Giảm độ bóng */
+        }
+
+        /* Nút bấm (mình giữ nguyên màu hồng để tạo điểm nhấn, nếu muốn đen trắng bạn báo mình) */
+        #btn { 
+            padding: 15px 40px; 
+            font-size: 1.5rem; 
+            background: #ffc0cb; 
+            color: #000000; /* Chữ trên nút màu đen */
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 3. CHỈNH POPUP (NỀN TRẮNG, CHỮ ĐEN, VIỀN ĐEN) */
+        .box { 
+            position: absolute; 
+            width: 180px; 
+            padding: 15px; 
+            background: #ffffff; /* Nền trắng */
+            border: 2px solid #000000; /* Viền đen */
+            border-radius: 15px; 
+            color: #000000; /* Chữ trong popup màu đen */
+            font-weight: bold; 
+            text-align: center; 
+            z-index: 100; 
+            animation: appear 0.2s ease-out; 
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @keyframes appear { from { transform: scale(0); } to { transform: scale(1); } }
     </style>
 </head>
 <body>
+
     <h1>Sha có điều muốn nói</h1>
-    <button onclick="startHeart()">Click vào để xem</button>
+    <button id="btn">Click vào để xem</button>
 
     <script>
-        function createPopup() {
-            const popup = document.createElement('div');
-            popup.className = 'popup';
-            const x = Math.random() * (window.innerWidth - 200);
-            const y = Math.random() * (window.innerHeight - 100);
-            popup.style.left = x + 'px';
-            popup.style.top = y + 'px';
-            popup.innerHTML = "Tràn ngập bộ nhớ nhớ nhớ em! ❤️";
-            document.body.appendChild(popup);
-        }
-
-        function startHeart() {
+        const button = document.getElementById('btn');
+        
+        button.onclick = function() {
             let count = 0;
-            const timer = setInterval(() => {
-                createPopup();
+            // Xóa hết popup cũ nếu có (tránh bị rối nếu bấm nhiều lần)
+            document.querySelectorAll('.box').forEach(el => el.remove());
+
+            const interval = setInterval(() => {
+                const div = document.createElement('div');
+                div.className = 'box';
+                div.innerHTML = "Tràn ngập bộ nhớ nhớ nhớ em! ❤️";
+                
+                // Vị trí ngẫu nhiên
+                div.style.left = Math.random() * (window.innerWidth - 180) + 'px';
+                div.style.top = Math.random() * (window.innerHeight - 80) + 'px';
+                
+                document.body.appendChild(div);
                 count++;
-                if (count > 50) clearInterval(timer);
-            }, 150);
-        }
+                
+                if (count > 60) clearInterval(interval);}, 100);
+        };
     </script>
 </body>
 </html>
